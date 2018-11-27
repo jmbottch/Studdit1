@@ -5,8 +5,8 @@ before((done) => {
     mongoose.connect('mongodb://localhost/studdit');
 
     mongoose.connection
-    .once('open', () => { done(); })
-    .on('error', (error) => { console.warn('Error: ', error);});
+        .once('open', () => { done(); })
+        .on('error', (error) => { console.warn('Error: ', error); });
 });
 
 beforeEach((done) => {
