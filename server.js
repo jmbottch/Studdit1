@@ -9,9 +9,7 @@ const User = require('./src/models/user');
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 
-app.get('/api', (req, res) => {
-    res.send({test: 'succes'});
-});
+
 
 
 MongoClient.connect('mongodb://admin:admin123@ds151631.mlab.com:51631/studditmongo', (err, db) => {
@@ -20,6 +18,10 @@ MongoClient.connect('mongodb://admin:admin123@ds151631.mlab.com:51631/studditmon
   app.listen(3000, () => {
     console.log('app working on 3000')
   })
+
+  app.get('/api', (req, res) => {
+    res.send({test: 'succes'});
+  });
 
 app.post('user/add', (req, res, next) => {
     var user = new User({
@@ -37,4 +39,4 @@ app.post('user/add', (req, res, next) => {
       res.send('User added successfully');
     });
   });
-})
+});
