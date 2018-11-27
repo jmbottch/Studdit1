@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/2116547/studdit#readme",
   "dependencies": {
+    "express": "^4.16.4",
     "mocha": "^5.2.0",
     "mongoose": "^5.3.13",
     "nodemon": "^1.18.6"
