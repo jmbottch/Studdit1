@@ -7,7 +7,7 @@ const ThreadSchema = new Schema({
         required:[true, 'Title is required.']
     },
     content: String,
-    user: {
+    author: {
         type: Schema.Types.ObjectId,
         ref: 'user'
     },
