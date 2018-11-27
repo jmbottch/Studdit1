@@ -15,7 +15,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 MongoClient.connect('mongodb://admin:admin123@ds151631.mlab.com:51631/studditmongo', (err, db) => {
     var dbase = db.db("studditmongo");
     if (err) return console.log(err)
-    app.listen(precess.env.PORT || 3000, () => {
+    app.listen(process.env.PORT || 3000, () => {
         console.log('app working on 3000')
     })
 
