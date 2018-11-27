@@ -9,6 +9,10 @@ const User = require('./src/models/user');
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 
+app.get('/api', (req, res) => {
+    res.send({test: 'succes'});
+});
+
 
 MongoClient.connect('mongodb://admin:admin123@ds151631.mlab.com:51631/studditmongo', (err, db) => {
   var dbase = db.db("studditmongo");
