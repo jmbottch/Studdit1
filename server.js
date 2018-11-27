@@ -5,6 +5,7 @@ const bodyParser= require('body-parser')
 const app = express();
 const User = require('./src/models/user');
 
+
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 
@@ -19,7 +20,8 @@ MongoClient.connect('mongodb://admin:admin123@ds151631.mlab.com:51631/studditmon
 app.post('user/add', (req, res, next) => {
     var user = new User({
       username: req.body.username,
-      password: req.body.password
+      password: req.body.password,
+      threads: [req.body.threads]
     });
 
     dbase.collection("user").save(user, (err, result) => {
