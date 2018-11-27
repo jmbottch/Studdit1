@@ -5,6 +5,17 @@ const bodyParser= require('body-parser')
 const app = express();
 const User = require('./src/models/user');
 
+const PORT = process.env.PORT || 3000;
+
+const server = http.createServer((req, res) => {
+    res.statusCode = 200;
+    res.setHeader('Content-Type', 'text/plain');
+    res.end('Its working');
+});
+
+server.listen(PORT, () => {
+    console.log('Server is running on port ${PORT}/');
+});
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
