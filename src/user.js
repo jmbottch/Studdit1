@@ -11,6 +11,10 @@ const UserSchema = new Schema({
     }]
 });
 
+UserSchema.virtual('threadCount').get(function(){
+    return this.threads.length;
+});
+
 const User = mongoose.model('user', UserSchema);
 
 module.exports = User;
