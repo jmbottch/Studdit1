@@ -5,12 +5,8 @@ const bodyParser = require('body-parser')
 const app = express();
 const User = require('./src/models/user');
 
-
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-
-
-
 
 MongoClient.connect('mongodb://admin:admin123@ds151631.mlab.com:51631/studditmongo', (err, db) => {
     var dbase = db.db("studditmongo");
@@ -23,7 +19,7 @@ MongoClient.connect('mongodb://admin:admin123@ds151631.mlab.com:51631/studditmon
         res.send({ test: 'succes' });
     });
 
-    app.post('user/add', (req, res, next) => {
+    app.post('/user/add', (req, res, next) => {
         var user = new User({
             username: req.body.username,
             password: req.body.password,
@@ -35,7 +31,6 @@ MongoClient.connect('mongodb://admin:admin123@ds151631.mlab.com:51631/studditmon
                 console.log(err);
 
             }
-
             res.send('User added successfully');
         });
     });
