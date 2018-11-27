@@ -2,9 +2,10 @@
   "name": "studdit",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "server.js",
   "scripts": {
-    "test": "nodemon --exec mocha -R min"
+    "test": "nodemon --exec mocha -R min",
+    "start": "node server.js"
   },
   "repository": {
     "type": "git",
@@ -17,7 +18,8 @@
   },
   "homepage": "https://github.com/2116547/studdit#readme",
   "dependencies": {
-    "express": "^4.16.4",
+    "bower": "^1.8.4",
+    "express": "4.16.4",
     "mocha": "^5.2.0",
     "mongoose": "^5.3.13",
     "nodemon": "^1.18.6"

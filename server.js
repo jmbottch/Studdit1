@@ -5,38 +5,38 @@ const bodyParser = require('body-parser')
 const app = express();
 const User = require('./src/models/user');
 
+
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({
-  extended: true
-}));
+app.use(bodyParser.urlencoded({ extended: true }));
+
+
 
 
 MongoClient.connect('mongodb://admin:admin123@ds151631.mlab.com:51631/studditmongo', (err, db) => {
-  var dbase = db.db("studditmongo");
-  if (err) return console.log(err)
-  app.listen(3000, () => {
-    console.log('app working on 3000')
-  });
+    var dbase = db.db("studditmongo");
+    if (err) return console.log(err)
+    app.listen(process.env.PORT || 3000, () => {
+        console.log('app working on 3000')
+    })
 
-  app.get('/api', (req, res) => {
-    res.send({
-      test: 'succes'
-    });
-  });
-
-  app.post('user/add', (req, res, next) => {
-    var user = new User({
-      username: req.body.username,
-      password: req.body.password
+    app.get('/api', (req, res) => {
+        res.send({ test: 'succes' });
     });
 
-    dbase.collection("user").save(user, (err, result) => {
-      if (err) {
-        console.log(err);
+    app.post('user/add', (req, res, next) => {
+        var user = new User({
+            username: req.body.username,
+            password: req.body.password,
+            threads: [req.body.threads]
+        });
 
-      }
+        dbase.collection("user").save(user, (err, result) => {
+            if (err) {
+                console.log(err);
 
-      res.send('User added successfully');
+            }
+
+            res.send('User added successfully');
+        });
     });
-  });
 });
