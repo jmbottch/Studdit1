@@ -2,21 +2,23 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const ThreadSchema = new Schema({
-    title: String,
+    title: {
+        type: String,
+        required:[true, 'Title is required.']
+    },
     content: String,
-    author: {
+    user: {
         type: Schema.Types.ObjectId,
         ref: 'user'
     },
-    votes: Number = 0,
     comments: [{
         type: Schema.Types.ObjectId,
         ref: 'comment'
-    }]
-});
-
-ThreadSchema.virtual('commentCount').get(function(){
-    return this.comments.length;
+    }],
+    votes: {
+        type: Schema.Types.ObjectId,
+        ref: 'comment'
+    }
 });
 
 const Thread = mongoose.model('thread', ThreadSchema)
