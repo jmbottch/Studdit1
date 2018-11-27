@@ -10,7 +10,17 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 
 
-
+app.configure(function(){
+    app.use(express.favicon());
+    app.use(express.static(settings.c.WEB_PATH + '/public'));
+    app.use(express.bodyParser());
+    app.use(express.cookieParser());
+    app.use(express.methodOverride());
+    app.use(useragent.express());
+  
+    app.use(passport.initialize());
+    app.use(passport.session());
+});
 
 MongoClient.connect('mongodb://admin:admin123@ds151631.mlab.com:51631/studditmongo', (err, db) => {
   var dbase = db.db("studditmongo");
