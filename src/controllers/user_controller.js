@@ -8,7 +8,6 @@ module.exports = {
         User.create(userProps)
             .then(user => res.send(user))
             .catch(next);
-
     },
 
     editUser(req, res, next) {
