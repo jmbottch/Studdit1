@@ -4,15 +4,33 @@ const CommentController = require('../src/controllers/comment_controller');
 
 module.exports = (app) => {
 
+    // Create new user
     app.post('/api/user', UserController.create);
-    app.put('/api/user/:username', UserController.edit);
-    app.delete('/api/user/:username', UserController.delete);
 
+    // Change user password
+    app.put('/api/user', UserController.edit);
+
+    // Set user to inactive
+    app.delete('/api/user', UserController.delete);
+
+    // Create new thread
     app.post('/api/thread', ThreadController.create);
-    app.put('/api/thread/:title', ThreadController.edit);
-    app.delete('/api/thread/:title', ThreadController.delete);
 
-    app.post('/api/comment', CommentController.create);
-    app.put('/api/comment/:id', CommentController.edit);
-    app.delete('/api/comment/:id', CommentController.delete);
+    // Edit thread content
+    app.put('/api/thread', ThreadController.edit);
+
+    // Delete thread
+    app.delete('/api/thread', ThreadController.delete);
+
+    // Post new comment in thread
+    app.post('/api/thread/comment', CommentController.create);
+    
+    // Post new subcomment in existing comment
+    app.post('/api/comment', CommentController.createSubComment);
+
+    // Edit comment
+    app.put('/api/comment/edit', CommentController.edit);
+
+    // Delete comment
+    app.delete('/api/comment/delete', CommentController.delete);
 };
