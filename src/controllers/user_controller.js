@@ -2,36 +2,62 @@ const User = require('../models/user');
 
 module.exports = {
 
-    createUser(req, res, next) {
+    create(req, res, next) {
         const userProps = req.body;
 
         User.create(userProps)
-            .then(user => res.send(user))
-            .catch(next);
+            .then(user => res.status(201).send({ Message: 'User created' }))
+            .catch(next)
     },
 
-    editUser(req, res, next) {
-        const userId = req.params.id;
-        const userProps = req.body;
+    edit(req, res, next) {
+        const username = req.body.username;
+        const password = req.body.password;
+        const newPassword = req.body.newPassword;
 
-        User.findByIdAndUpdate({
-                _id: userId
-            }, userProps)
-            .then(() => User.findById({
-                _id: userId
-            }))
-            .then(driver => res.send(driver))
-            .catch(next);
-    },
-
-    deleteUser(req, res, next) {
-        const userId = req.params.id;
-        const userProps = req.body;
-
-        User.findByIdAndRemove({
-                _id: userId
+        User.findOne({
+                username: username
             })
-            .then(user => res.status(204).send(user))
+            .then(user => {
+                if (user === null) {
+                    res.status(422).send({
+                        Error: 'User does not exist.'
+                    })
+                }
+                if (user.password !== password) {
+                    res.status(400).send({
+                        Error: 'User password does not match.'
+                    })
+                } else {
+                    user.set('password', newPassword)
+                    user.save()
+                        .then(user => res.status(200).send({
+                            Message: 'Password updated succesfully'
+                        }))
+                }
+            })
+            .catch(next);
+    },
+
+    delete(req, res, next) {
+        const username = req.params.username;
+
+        User.findOne({
+                username: username
+            })
+            .then(user => {
+                if (user === null) {
+                    res.status(422).send({
+                        Error: 'User does not exist.'
+                    })
+                } else {
+                    user.set('active', false)
+                    user.save()
+                        .then(user => res.status(200).send({
+                            Message: 'User set to inactive'
+                        }))
+                }
+            })
             .catch(next);
     }
 };

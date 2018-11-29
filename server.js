@@ -18,9 +18,7 @@ neo4j.auth.basic('jeroen', 'b.m1mQSF3xsOsB.5LbY3TnSpyUejZ6B'), console.log("Neo4
 
 
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({
-  extended: true
-}));
+routes(app);
 
 MongoClient.connect('mongodb://admin:admin123@ds151631.mlab.com:51631/studditmongo', {useNewUrlParser: true}, (err, db) => {
  

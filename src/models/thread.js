@@ -9,15 +9,16 @@ const ThreadSchema = new Schema({
     content: String,
     author: {
         type: Schema.Types.ObjectId,
-        ref: 'user'
+        ref: 'user',
+        required:[true, 'UserId is required']
     },
     comments: [{
         type: Schema.Types.ObjectId,
         ref: 'comment'
     }],
     votes: {
-        type: Schema.Types.ObjectId,
-        ref: 'comment'
+        type: Number,
+        default: 0
     }
 });
 

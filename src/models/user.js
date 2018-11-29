@@ -1,5 +1,4 @@
 const mongoose = require('mongoose');
-const Thread = require('./thread');
 const Schema = mongoose.Schema;
 
 const UserSchema = new Schema({
@@ -13,19 +12,23 @@ const UserSchema = new Schema({
     },
     password: {
         type: String,
-    validate: {
-        validator: (password) => password.length > 6,
-        message: 'Password must be at least seven characters'
-    },
-        required:[true, 'Password is required.']    
+        validate: {
+            validator: (password) => password.length > 6,
+            message: 'Password must be at least seven characters'
+        },
+        required: [true, 'Password is required.']
     },
     threads: [{
         type: Schema.Types.ObjectId,
         ref: 'thread'
-    }]
+    }],
+    active: {
+        type: Boolean,
+        default: true
+    }
 });
 
-UserSchema.virtual('threadCount').get(function(){
+UserSchema.virtual('threadCount').get(function () {
     return this.threads.length;
 });
 
