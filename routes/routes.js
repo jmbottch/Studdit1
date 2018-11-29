@@ -1,37 +1,18 @@
-const UsersController = require('../src/controllers/user_controller');
+const UserController = require('../src/controllers/user_controller');
+const ThreadController = require('../src/controllers/thread_controller');
+const CommentController = require('../src/controllers/comment_controller');
 
 module.exports = (app) => {
 
-    app.post('/api/users', UsersController.createUser);
-    app.put('/api/users/:id', UsersController.editUser);
-    app.delete('/api/users/:id', UsersController.deleteUser);
-    app.get('/api/test', UsersController.test);
+    app.post('/api/user', UserController.create);
+    app.put('/api/user/:username', UserController.edit);
+    app.delete('/api/user/:username', UserController.delete);
 
-    // app.post('/user/add', (req, res, next) => {
-    //     var user = new User({
-    //         username: req.body.username,
-    //         password: req.body.password,
-    //         threads: [req.body.threads]
-    //     });
+    app.post('/api/thread', ThreadController.create);
+    app.put('/api/thread/:title', ThreadController.edit);
+    app.delete('/api/thread/:title', ThreadController.delete);
 
-    //     dbase.collection("user").save(user, (err, result) => {
-    //         if (err) {
-    //             console.log(err);
-
-    //         }
-    //         res.send('User added successfully');
-    //     });
-    // });
-
-    // app.get('/user', (req, res, next) => {
-    //     dbase.collection("user").findOne({
-    //             username: req.header.username
-    //         })
-    //         .then((users) => {
-    //             if (err) {
-    //                 console.log(err);
-    //             }
-    //             res.send(users);
-    //         });
-    // });
+    app.post('/api/comment', CommentController.create);
+    app.put('/api/comment/:id', CommentController.edit);
+    app.delete('/api/comment/:id', CommentController.delete);
 };
