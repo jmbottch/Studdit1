@@ -59,7 +59,7 @@ Backend server for Studdit built in Node.js.
 {
     "username": "username",
     "title": "thread title",
-    "newCont": "new content"
+    "newContent": "new content"
 }
 ```
 
@@ -71,5 +71,53 @@ Backend server for Studdit built in Node.js.
 {
     "username": "username",
     "title": "thread title"
+}
+```
+
+## Comment
+### create comment
+**route:** /api/thread/comment\
+**http:** post\
+**body:**
+```sh
+{
+    "username": "username",
+    "title": "thread title",
+    "content": "comment content"
+}
+```
+
+### create nested comment
+**route:** /api/comment\
+**http:** post\
+**body:**
+```sh
+{
+    "username": "username",
+    "comment": "parent comment content",
+    "content": "comment content"
+}
+```
+
+### update comment
+**route:** /api/thread/:title\
+**http:** put\
+**body:**
+```sh
+{
+    "username": "username",
+    "title": "comment content",
+    "newContent": "new content"
+}
+```
+
+### delete comment
+**route:** /api/thread/:title\
+**http:** delete\
+**body:**
+```sh
+{
+    "username": "username",
+    "comment": "comment content"
 }
 ```

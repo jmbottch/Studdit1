@@ -20,7 +20,7 @@ module.exports = {
                             "content": req.body.content,
                             "author": user._id,
                         })
-                        .then(thread => res.status(201).send({
+                        .then(() => res.status(201).send({
                             Message: 'Thread created'
                         }))
                         .catch(next);
