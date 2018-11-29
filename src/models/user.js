@@ -21,7 +21,11 @@ const UserSchema = new Schema({
     threads: [{
         type: Schema.Types.ObjectId,
         ref: 'thread'
-    }]
+    }],
+    active: {
+        type: Boolean,
+        default: true
+    }
 });
 
 UserSchema.virtual('threadCount').get(function () {

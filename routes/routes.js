@@ -1,16 +1,15 @@
-const UsersController = require('../src/controllers/user_controller');
+const UserController = require('../src/controllers/user_controller');
+const ThreadController = require('../src/controllers/thread_controller');
 
 module.exports = (app) => {
-    
-    app.get('/api/test', UsersController.test);
 
-    //app.post('/api/users', UsersController.create);
-    app.put('/api/user/:username', UsersController.edit);
-    app.delete('/api/user/:id', UsersController.deleteUser);
+    app.post('/api/user', UserController.create);
+    app.put('/api/user/:username', UserController.edit);
+    app.delete('/api/user/:username', UserController.delete);
 
-    // app.post('/api/thread', UsersController.createUser);
-    // app.put('/api/thread/:id', UsersController.editUser);
-    // app.delete('/api/thread/:id', UsersController.deleteUser);
+    app.post('/api/thread', ThreadController.create);
+    app.put('/api/thread/:title', ThreadController.edit);
+    app.delete('/api/thread/:title', ThreadController.delete);
 
     // app.post('/api/comment', UsersController.createUser);
     // app.put('/api/comment/:id', UsersController.editUser);
