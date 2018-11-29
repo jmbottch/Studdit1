@@ -1,5 +1,6 @@
 const neo4j = require('neo4j-driver').v1;
 const neo = require('./neo4j_setup');
+const app = require('express');
 
 
 
@@ -13,6 +14,8 @@ const session = driver.session(() => {
 });
 
 module.exports = {
+
+  
 
   create(req, res, next) {
 
@@ -33,22 +36,64 @@ module.exports = {
     console.log('User has been added');
   },
 
+  delete(req, res, next) {
+
+    const userProps = req.body;
+    const username = req.body.username;
+    const session = driver.session();
+
+    User.delete(userProps);
+    const deleteResult = session.run(
+      'MATCH (n { username: $username }) DETACH DELETE n',
+      { username: username }
+    );
+    deleteResult.then(result => {
+      session.close();
+      driver.close();
+    });
+
+    console.log('User and its relations have been deleted');
+  },
+
   createRelation(req, res, next) {
 
     const userProps = req.body;
     const username = req.body.username;
     const session = driver.session();
 
-    User.create(userProps);
-    const addResult = session.run(
-      'MATCH (a:Person), (b:Person) WHERE a.username = $username AND b.username = $username CREATE (a)-[r:RELTYPE]->(b) RETURN type(r)',
+    User.createRelation(userProps);
+    const addRelation = session.run(
+      'MATCH (a:Person), (b:Person) WHERE a.username = $username AND b.username = $username CREATE (a)-[r:ARE_FRIENDS]->(b) RETURN type(r)',
       { username: username }
     );
-    addResult.then(result => {
+    addRelation.then(result => {
       session.close();
       driver.close();
     });
 
-    console.log('User has been added');
+    console.log('Relation has been added');
+  },
+
+  deleteRelation(req, res, next) {
+    const userProps = req.body;
+    const username = req.body.username;
+    const session = driver.session();
+
+    User.deleteRelation(userProps);
+    const removeRelation = session.run (
+      'MATCH (n { name: $username })-[r:ARE_FRIENDS]->() DELETE r',
+      {username, username}
+    );
+
+      deleteRelation.then(result => {
+        session.close();
+        driver.close();
+      });
+
+      console.log("relation has been successfully removed.")
   }
+
+
+  
+
 };
