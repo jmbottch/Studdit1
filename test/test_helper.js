@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 mongoose.Promise = global.Promise;
 
 before((done) => {
-    mongoose.connect('mongodb://localhost/studdit');
+    mongoose.connect('mongodb://localhost/studdit', { useNewUrlParser: true });
 
     mongoose.connection
         .once('open', () => { done(); })

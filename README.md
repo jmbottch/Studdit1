@@ -99,7 +99,7 @@ Backend server for Studdit built in Node.js.
 }
 ```
 
-### update comment
+### edit comment
 **route:** /api/thread/:title\
 **http:** put\
 **body:**
@@ -117,7 +117,7 @@ Backend server for Studdit built in Node.js.
 **body:**
 ```sh
 {
-    "username": "username",
+    "title": "thread title",
     "comment": "comment content"
 }
 ```

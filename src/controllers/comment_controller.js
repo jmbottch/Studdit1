@@ -85,7 +85,7 @@ module.exports = {
                 })
             } else {
                 Comment.findOne({
-                    content: content
+                    content: req.body.content
                 })
                     .then((comment) => {
                         if (comment === null) {
@@ -96,7 +96,7 @@ module.exports = {
                             comment.set('content', req.body.newContent)
                             comment.save()
                                 .then(() => res.status(200).send({
-                                    Message: 'Comment updated'
+                                    Message: 'Comment edited'
                                 }))
                         }
                     })                    

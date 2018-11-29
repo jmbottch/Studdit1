@@ -40,7 +40,7 @@ module.exports = {
     },
 
     delete(req, res, next) {
-        const username = req.params.username;
+        const username = req.body.username;
 
         User.findOne({
                 username: username

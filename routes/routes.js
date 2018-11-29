@@ -8,19 +8,19 @@ module.exports = (app) => {
     app.post('/api/user', UserController.create);
 
     // Change user password
-    app.put('/api/user/:username', UserController.edit);
+    app.put('/api/user', UserController.edit);
 
     // Set user to inactive
-    app.delete('/api/user/:username', UserController.delete);
+    app.delete('/api/user', UserController.delete);
 
     // Create new thread
     app.post('/api/thread', ThreadController.create);
 
     // Edit thread content
-    app.put('/api/thread/:title', ThreadController.edit);
+    app.put('/api/thread', ThreadController.edit);
 
     // Delete thread
-    app.delete('/api/thread/:title', ThreadController.delete);
+    app.delete('/api/thread', ThreadController.delete);
 
     // Post new comment in thread
     app.post('/api/thread/comment', CommentController.create);

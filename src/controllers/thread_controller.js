@@ -53,7 +53,7 @@ module.exports = {
     },
 
     delete(req, res, next) {
-        const title = req.params.title;
+        const title = req.body.title;
 
         Thread.findOne({
                 title: title
