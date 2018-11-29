@@ -6,7 +6,9 @@ Backend server for Studdit built in Node.js.
 ## User
 ### create user
 **route:** /api/user
+
 **http:** post
+
 **body:**
 ```sh
 {
@@ -17,7 +19,9 @@ Backend server for Studdit built in Node.js.
 
 ### update password
 **route:** /api/user/:username
+
 **http:** put
+
 **body:**
 ```sh
 {
@@ -29,7 +33,9 @@ Backend server for Studdit built in Node.js.
 
 ### deactivate user
 **route:** /api/user/:username
+
 **http:** delete
+
 **body:**
 ```sh
 {
@@ -41,7 +47,9 @@ Backend server for Studdit built in Node.js.
 ## Thread
 ### create thread
 **route:** /api/thread
+
 **http:** post
+
 **body:**
 ```sh
 {
@@ -53,7 +61,9 @@ Backend server for Studdit built in Node.js.
 
 ### update content
 **route:** /api/thread/:title
+
 **http:** put
+
 **body:**
 ```sh
 {
@@ -65,7 +75,9 @@ Backend server for Studdit built in Node.js.
 
 ### delete thread
 **route:** /api/thread/:title
+
 **http:** delete
+
 **body:**
 ```sh
 {
