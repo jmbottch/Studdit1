@@ -4,18 +4,14 @@ const express = require('express');
 const bodyParser = require('body-parser')
 const routes = require('./routes/routes');
 const app = express();
-const User = require('./src/models/user');
+var mongodb = require('./src/config/mongodb_connector');
+const config = require('./src/config/mongodb_config');
 
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({
-  extended: true
-}));
+routes(app);
 
-MongoClient.connect('mongodb://admin:admin123@ds151631.mlab.com:51631/studditmongo', (err, db) => {
-  var dbase = db.db("studditmongo");
-  if (err) return console.log(err)
-  app.listen(process.env.PORT || 3000, () => {
-    console.log('app working on 3000')
-  })
-  routes(app);
-});
+app.listen(config.env.webPort, () => {
+  console.log('App is ready for requests on localhost:3000')
+})
+
+module.exports = app;
