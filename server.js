@@ -17,6 +17,5 @@ MongoClient.connect('mongodb://admin:admin123@ds151631.mlab.com:51631/studditmon
   app.listen(process.env.PORT || 3000, () => {
     console.log('app working on 3000')
   })
-
   routes(app);
 });
