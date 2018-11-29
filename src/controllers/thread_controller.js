@@ -21,7 +21,7 @@ module.exports = {
                             "author": user._id,
                         })
                         .then(thread => res.status(201).send({
-                            Message: 'Thread created'                            
+                            Message: 'Thread created'
                         }))
                         .catch(next);
                 }
@@ -29,7 +29,27 @@ module.exports = {
     },
 
     edit(req, res, next) {
+        const title = req.body.title;
+        const newContent = req.body.content;
 
+        Thread.findOne({
+            title: title
+        })
+        .then((thread) => {
+            if(thread === null){
+                res.status(422).send({
+                    Error: 'Thread does not exist.'
+                })
+            } else {
+                thread.set('content', newContent)
+                thread.save()
+                    .then(thread => res.status(200).send({
+                        Message: 'Thread edited'
+                    }))
+            }
+
+        })
+        .catch(next);
     },
 
     delete(req, res, next) {
@@ -46,12 +66,12 @@ module.exports = {
                 } else {
                     thread.set('title', 'deleted')
                     thread.set('content', 'deleted')
-                    thread.set('author', null)
                     thread.save()
                         .then(thread => res.status(200).send({
                             Message: 'Thread deleted'
                         }))
                 }
             })
+            .catch(next);
     }
 };

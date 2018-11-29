@@ -1,5 +1,6 @@
 const UserController = require('../src/controllers/user_controller');
 const ThreadController = require('../src/controllers/thread_controller');
+const CommentController = require('../src/controllers/comment_controller');
 
 module.exports = (app) => {
 
@@ -11,7 +12,7 @@ module.exports = (app) => {
     app.put('/api/thread/:title', ThreadController.edit);
     app.delete('/api/thread/:title', ThreadController.delete);
 
-    // app.post('/api/comment', UsersController.createUser);
-    // app.put('/api/comment/:id', UsersController.editUser);
-    // app.delete('/api/comment/:id', UsersController.deleteUser);
+    app.post('/api/comment', CommentController.create);
+    app.put('/api/comment/:id', CommentController.edit);
+    app.delete('/api/comment/:id', CommentController.delete);
 };
