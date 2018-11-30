@@ -10,17 +10,17 @@ module.exports = {
     create(req, res, next) {
         const username = req.body.username;
 
-        const resultAdd = session.run(
-            'CREATE (a:User {username: $username}) RETURN a',
-             {username: username}
-             ); 
+        // const resultAdd = session.run(
+        //     'CREATE (a:User {username: $username}) RETURN a',
+        //      {username: username}
+        //      ); 
 
         User.create(userProps)
-            .then(user => res.status(201).send({ Message: 'User created' })),
-            resultAdd.then(result => {
-                session.close();
-                driver.close();
-            })
+            .then(user => res.status(201).send({ Message: 'User created' }))
+            // resultAdd.then(result => {
+            //     session.close();
+            //     driver.close();
+            // })
             .catch(next)
     },
 
