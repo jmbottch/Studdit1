@@ -7,6 +7,9 @@ module.exports = (app) => {
     // Create new user
     app.post('/api/user', UserController.create);
 
+    // Fetch user based on username
+    app.get('/api/user/:username', UserController.fetch)
+
     // Change user password
     app.put('/api/user', UserController.edit);
 

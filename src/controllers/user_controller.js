@@ -10,6 +10,24 @@ module.exports = {
             .catch(next)
     },
 
+    fetch(req, res, next) {
+        const username = req.params.username;
+
+        User.findOne({
+                username: username
+            })
+            .then(user => {
+                if (user === null) {
+                    res.status(422).send({
+                        Error: 'User does not exist.'
+                    })
+                } else {
+                    res.status(200).send(user);
+                }
+            })
+            .catch(next);
+    },
+
     edit(req, res, next) {
         const username = req.body.username;
         const password = req.body.password;
