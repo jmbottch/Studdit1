@@ -8,7 +8,7 @@ module.exports = {
 
 
     create(req, res, next) {
-        const userProps = req.body;
+        const username = req.body.username;
 
         const resultAdd = session.run(
             'CREATE (a:User {username: $username}) RETURN a',
