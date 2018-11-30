@@ -13,6 +13,12 @@ module.exports = (app) => {
     // Set user to inactive
     app.delete('/api/user', UserController.delete);
 
+    // Add friendship between users
+    app.post('/api/user/addfriend', UserController.addFriend);
+    
+    // Delete friendship between users
+    app.delete('/api/user/deletefriend', UserController.deleteFriend);
+
     // Create new thread
     app.post('/api/thread', ThreadController.create);
 
@@ -33,4 +39,6 @@ module.exports = (app) => {
 
     // Delete comment
     app.delete('/api/comment/delete', CommentController.delete);
+
+    
 };
