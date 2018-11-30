@@ -15,6 +15,10 @@ Backend server for Studdit built in Node.js.
 }
 ```
 
+### fetch user
+**route:** /api/user/:username\
+**http:** get
+
 ### update password
 **route:** /api/user/:username\
 **http:** put\
