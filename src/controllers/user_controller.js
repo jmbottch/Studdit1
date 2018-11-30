@@ -1,26 +1,12 @@
 const User = require('../models/user');
-const neo4j = require('neo4j-driver').v1;
-
-const driver = neo4j.driver('bolt://hobby-ccflbaaccbcogbkemkneffbl.dbs.graphenedb.com:24786', 
-neo4j.auth.basic('jeroen', 'b.m1mQSF3xsOsB.5LbY3TnSpyUejZ6B'), console.log("Neo4j is connected on port 3000"));
-
 module.exports = {
 
 
     create(req, res, next) {
-        const username = req.body.username;
-
-        // const resultAdd = session.run(
-        //     'CREATE (a:User {username: $username}) RETURN a',
-        //      {username: username}
-        //      ); 
+        const userProps = req.body;
 
         User.create(userProps)
             .then(user => res.status(201).send({ Message: 'User created' }))
-            // resultAdd.then(result => {
-            //     session.close();
-            //     driver.close();
-            // })
             .catch(next)
     },
 
