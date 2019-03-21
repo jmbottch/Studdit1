@@ -11,6 +11,7 @@ const config = require('./src/config/mongodb_config');
 
 const driver = neo4j.driver('bolt://hobby-ccflbaaccbcogbkemkneffbl.dbs.graphenedb.com:24786', 
 neo4j.auth.basic('jeroen', 'b.m1mQSF3xsOsB.5LbY3TnSpyUejZ6B'), console.log("Neo4j is connected on port 3000"));
+//neo4j.auth.basic('jeroen', 'studdit123'), console.log("Neo4j is connected on port 3000"));
 
 app.use(bodyParser.json());
 routes(app);

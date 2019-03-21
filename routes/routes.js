@@ -33,6 +33,12 @@ module.exports = (app) => {
 
     // Post new comment in thread
     app.post('/api/thread/comment', CommentController.create);
+
+    // Upvote comment
+    app.post('/api/comment/upvote', CommentController.upvote);
+
+    // Downvote comment
+    app.post('/api/comment/downvote', CommentController.downvote);
     
     // Post new subcomment in existing comment
     app.post('/api/comment', CommentController.createSubComment);

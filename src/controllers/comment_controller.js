@@ -137,4 +137,76 @@ module.exports = {
             })
             .catch(next);
     },
+
+    upvote(req, res, next) {
+        User.findOne({
+            username: req.body.username
+        })
+        .then((user) => {
+            if (user === null) {
+                res.status(422).send({
+                    Error: 'User not found'
+                })
+            } else {
+                Comment.findOne({
+                        _id: req.body.id
+                    })
+                    .then((comment) => {
+                        if (comment === null) {
+                            res.status(422).send({
+                                Error: 'Comment not found'
+                            })
+                        } else {
+                            comment.comments.upvotes.findOne({_id: user._id})
+                            .then((userid) => {
+                                if(userid === null){
+                                    comment.votes ++;
+                                    comment.upvotes.push(user._id);
+                                } else {
+                                    res.status(422).send({
+                                        Error: 'User already upvoted this comment'
+                                    })
+                                }
+                            })
+                        Promise.all([comment.save(), comment.upvotes.save()])
+                            .then(() => res.status(201).send({
+                                Message: 'Comment upvoted'
+                            }))
+                            .catch(next);
+                        }
+                    })
+            }
+        });
+    },
+
+    downvote(req, res, next){
+        User.findOne({
+            username: req.body.username
+        })
+        .then((user) => {
+            if (user === null) {
+                res.status(422).send({
+                    Error: 'User not found'
+                })
+            } else {
+                Comment.findOne({
+                        _id: req.body.id
+                    })
+                    .then((comment) => {
+                        if (comment === null) {
+                            res.status(422).send({
+                                Error: 'Comment not found'
+                            })
+                        } else {
+                            comment.votes --;
+                            Promise.all([comment.save()])
+                                .then(() => res.status(201).send({
+                                    Message: 'Comment downvoted'
+                                }))
+                                .catch(next);
+                        }
+                    })
+            }
+        });
+    }
 };
