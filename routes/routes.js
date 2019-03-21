@@ -3,7 +3,6 @@ const ThreadController = require('../src/controllers/thread_controller');
 const CommentController = require('../src/controllers/comment_controller');
 
 module.exports = (app) => {
-
     // Create new user
     app.post('/api/user', UserController.create);
 
