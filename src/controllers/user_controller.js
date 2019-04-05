@@ -1,13 +1,34 @@
 const User = require('../models/user');
+
 module.exports = {
-
-
-    create(req, res, next) {
-        const userProps = req.body;
-
-        User.create(userProps)
-            .then(user => res.status(201).send({ Message: 'User created' }))
-            .catch(next)
+    
+    create(req, res) {
+        const username = req.body.username;    
+        
+        User.findOne({
+            username: username
+        })
+        .then(user => {
+            if (user === null){
+                User.create({
+                    username: username,
+                    password: req.body.password,
+                    threads: []
+                })
+                .then(function(newUser) {
+                    res.status(201).send({ Message: 'User created' });
+                })
+                .catch(function(err) {
+                    if (err.name == 'ValidationError') {
+                        res.status(422).json(err.message);
+                    } else {
+                        res.status(500).json(err);
+                    }
+                })
+            } else {
+                res.status(409).send({'Error' : 'Username already taken'});
+            }
+        })
     },
 
     fetch(req, res, next) {
@@ -123,9 +144,5 @@ module.exports = {
         })
 
         console.log('Friends deleted!')
-
-
-
-
     },
 };
