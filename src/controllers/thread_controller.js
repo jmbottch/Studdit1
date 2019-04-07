@@ -10,6 +10,13 @@ module.exports = {
         })
     },
 
+    single(req, res) {
+        Thread.findOne({_id: req.body._id})
+        .then((thread) => {
+            res.status(200).send(thread)
+        })
+    },
+
     create(req, res, next) {
 
         Thread.create({
@@ -20,10 +27,10 @@ module.exports = {
         .then(() => {
             res.status(200).send({Message:"Thread has been created."}),
             console.log('thread created')
-            .catch((err) => {
+            
+            }).catch((err) => {
                 res.status(401).send({err})
                 console.log(err)
-            })
         })
     },
 
@@ -69,6 +76,8 @@ module.exports = {
                         }))
                 }
             })
-            .catch(next);
+            .catch((err) => {
+                res.status(401).send({Error: 'Something went wrong'})
+            });
     }
 };

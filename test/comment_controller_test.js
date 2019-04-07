@@ -27,7 +27,7 @@ describe('The comment_controller', () => {
 
     it('can fetch a list of comments', function (done) {
         request(app)
-            .get('/api/comments') //get all
+            .get('/api/comments') //get all comments
             .end(function (err, res) {
                 if (err) console.log(err)
                 expect(res.statusCode).to.equal(200) //check for status code 200

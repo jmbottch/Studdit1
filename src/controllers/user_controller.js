@@ -28,11 +28,9 @@ module.exports ={
                 session.close();
                 driver.close();
             })
-            .catch((err) => {
-                if(err.username == 'MongoError' && err.code == 11000){
-                    res.status(401).send({Error: 'username is already taken.'})
-                }
-            })
+            
+        }).catch((err) => {
+            res.status(401).send({Error: 'Something went wrong'})
         })
     },
 
@@ -98,7 +96,9 @@ module.exports ={
                     res.status(200).send(user);
                 }
             })
-            .catch(next);
+            .catch((err) => {
+                res.status(401).send({Error: ' Something went wrong'})
+            });
     },
 
     edit(req, res) {
