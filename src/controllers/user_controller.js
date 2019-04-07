@@ -4,6 +4,12 @@ const driver = neo4j.driver('bolt://hobby-ccflbaaccbcogbkemkneffbl.dbs.graphened
 neo4j.auth.basic('jeroen', 'b.m1mQSF3xsOsB.5LbY3TnSpyUejZ6B'));
 
 module.exports ={
+    findall(req, res) {
+        User.find({})
+        .then(users => {
+            res.status(200).send(users)
+        })
+    },
     create(req, res){
         const username = req.body.username;
         const session = driver.session();
@@ -80,10 +86,8 @@ module.exports ={
         console.log('Friendship deleted')
     },
     fetch(req, res, next) {
-        const username = req.params.username;
-
         User.findOne({
-                username: username
+                _id: req.body._id
             })
             .then(user => {
                 if (user === null) {
@@ -97,25 +101,28 @@ module.exports ={
             .catch(next);
     },
 
-    edit(req, res, next) {
-        const username = req.body.username;
-        const currentPass = req.body.password;
-        const newPass = req.boy.newPassword;
-
-        User.findOne({username: username}) //find user
+    edit(req, res) {
+        User.findOne({_id: req.body._id})
         .then(user => {
             if(user === null) {
-                res.statu(401).send({Error: 'User does not exist'})
-            }
-            if(user.password !== currentPass){
-                res.status(401).send({Error:'Current password is wrong.'})
-            }
-            else{
-                user.set('password', newPass)
+                res.status(401).send({Error: 'User does not exist.'})
+                console.log("user does not exist")
+            }else {
+                console.log(user)              
+                let passwordToSet = req.body.password;               
+                if(req.body.password === '' || req.body.password === null)passwordToSet = user.password;
+                user.set({                 
+                    password: passwordToSet
+                })
                 user.save()
-                .then(user => res.status(200).send({Message: 'Password has been changed.'}))
+                .then(() => {
+                    res.status(200).send({Message: 'Password changed'})
+                })
+                .catch((err) => {
+                    res.status(401).send({err})
+                })
             }
-        });
+        })
     },
     delete(req, res, next) {
         const username = req.body.username;
@@ -136,6 +143,9 @@ module.exports ={
                         }))
                 }
             })
-            .catch(next);
+            .catch((err) => {
+                res.status(401).send({Error: "something went wrong"})
+                console.log(err)
+            });
     },
 }

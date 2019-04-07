@@ -7,10 +7,13 @@ module.exports = (app) => {
     app.post('/api/user', UserController.create);
 
     // Fetch user based on username
-    app.get('/api/user/:username', UserController.fetch)
+    app.get('/api/user/:id', UserController.fetch)
+
+    // fetch list of all users
+    app.get('/api/users', UserController.findall)
 
     // Change user password
-    app.put('/api/user', UserController.edit);
+    app.put('/api/user/:id', UserController.edit);
 
     // Set user to inactive
     app.delete('/api/user', UserController.delete);
@@ -20,6 +23,8 @@ module.exports = (app) => {
     
     // Delete friendship between users
     app.delete('/api/user/deletefriend', UserController.deleteFriend);
+    //list of threads
+    app.get('/api/threads', ThreadController.findall)
 
     // Create new thread
     app.post('/api/thread', ThreadController.create);
@@ -32,15 +37,18 @@ module.exports = (app) => {
 
     // Post new comment in thread
     app.post('/api/thread/comment', CommentController.create);
+
+    //a list of all comments
+    app.get('/api/comments', CommentController.findall)
     
     // Post new subcomment in existing comment
-    app.post('/api/comment', CommentController.createSubComment);
+    //app.post('/api/comment/:id', CommentController.createSubComment);
 
     // Edit comment
-    app.put('/api/comment/edit', CommentController.edit);
+    app.put('/api/comment', CommentController.edit);
 
     // Delete comment
-    app.delete('/api/comment/delete', CommentController.delete);
+    app.put('/api/comment/delete', CommentController.delete);
 
     
 };
