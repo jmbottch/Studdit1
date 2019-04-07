@@ -41,11 +41,11 @@ module.exports = (app) => {
     //a list of all comments
     app.get('/api/comments', CommentController.findall)
     
-    // Post new subcomment in existing comment
-    //app.post('/api/comment/:id', CommentController.createSubComment);
-
     // Edit comment
-    app.put('/api/comment', CommentController.edit);
+    app.put('/api/comment/:id', CommentController.edit);
+
+    //fetch single comment
+    app.get('/api/comment/:id', CommentController.single) 
 
     // Delete comment
     app.put('/api/comment/delete', CommentController.delete);

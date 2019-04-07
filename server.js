@@ -12,6 +12,16 @@ const config = require('./src/config/mongodb_config');
 app.use(bodyParser.json());
 routes(app);
 
+var env = process.argv[2] || 'dev';
+switch (env) {
+    case 'prod':
+      mongodb.createProdConnection();
+      break;
+    case 'test':
+      mongodb.createTestConnection();
+      break;
+}
+
 const driver = neo4j.driver('bolt://hobby-ccflbaaccbcogbkemkneffbl.dbs.graphenedb.com', 
 neo4j.auth.basic('jeroen', 'b.m1mQSF3xsOsB.5LbY3TnSpyUejZ6B'), console.log("Neo4j is connected on port 3000"));
 
