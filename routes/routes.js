@@ -26,6 +26,9 @@ module.exports = (app) => {
     //list of threads
     app.get('/api/threads', ThreadController.findall)
 
+    // single thread
+    app.get('/api/thread/:id', ThreadController.single)
+
     // Create new thread
     app.post('/api/thread', ThreadController.create);
 
@@ -33,7 +36,7 @@ module.exports = (app) => {
     app.put('/api/thread', ThreadController.edit);
 
     // Delete thread
-    app.delete('/api/thread', ThreadController.delete);
+    app.put('/api/thread/delete', ThreadController.delete);
 
     // Post new comment in thread
     app.post('/api/thread/comment', CommentController.create);

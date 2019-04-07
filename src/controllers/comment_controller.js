@@ -74,6 +74,8 @@ module.exports = {
                     .catch((err) => res.status(401).send({err}));
                 }
             })
-            .catch(next);
+            .catch((err) => {
+                res.status(401).send({Error: 'Something went wrong'})
+            });
     },
 };

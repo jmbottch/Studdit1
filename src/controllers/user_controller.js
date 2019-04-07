@@ -10,6 +10,7 @@ module.exports ={
             res.status(200).send(users)
         })
     },
+
     create(req, res){
         const username = req.body.username;
         const session = driver.session();
@@ -28,11 +29,9 @@ module.exports ={
                 session.close();
                 driver.close();
             })
-            .catch((err) => {
-                if(err.username === 'MongoError' && err.code === 11000){
-                    res.status(401).send({Error: 'username is already taken.'})
-                }
-            })
+            
+        }).catch((err) => {
+            res.status(401).send({Error: 'Something went wrong'})
         })
     },
 
@@ -48,7 +47,7 @@ module.exports ={
             {username1: username1, username2: username2} 
         ).then(() => {
             res.status(200).send({Message:'Friendship created successfully.'})
-        });
+        })
         resultAddFriend.then(() => {
             session.close();
             driver.close();
@@ -73,7 +72,7 @@ module.exports ={
             {username1: username1, username2: username2}
         ).then(() => {
             res.status(200).send({Message:'Friendship removed succesfully'})
-        });
+        })
 
         resultDeleteFriend.then(result => {
             session.close();
@@ -85,6 +84,7 @@ module.exports ={
         });
         console.log('Friendship deleted')
     },
+
     fetch(req, res, next) {
         User.findOne({
                 _id: req.body._id
@@ -98,22 +98,28 @@ module.exports ={
                     res.status(200).send(user);
                 }
             })
-            .catch(next);
+            .catch((err) => {
+                res.status(401).send({Error: ' Something went wrong'})
+            });
     },
 
     edit(req, res) {
-        User.findOne({_id: req.body._id})
+        const username = req.body.username;
+
+        User.findOne({
+            username: username
+        })
         .then(user => {
             if(user === null) {
-                res.status(401).send({Error: 'User does not exist.'});
+                res.status(401).send({Error: 'User does not exist.'})
                 console.log("user does not exist")
             }else {
-                console.log(user);
+                console.log(user)              
                 let passwordToSet = req.body.password;               
                 if(req.body.password === '' || req.body.password === null)passwordToSet = user.password;
                 user.set({                 
                     password: passwordToSet
-                });
+                })
                 user.save()
                 .then(() => {
                     res.status(200).send({Message: 'Password changed'})
@@ -124,6 +130,7 @@ module.exports ={
             }
         })
     },
+
     delete(req, res, next) {
         const username = req.body.username;
 
@@ -136,7 +143,7 @@ module.exports ={
                         Error: 'User does not exist.'
                     })
                 } else {
-                    user.set('active', false);
+                    user.set('active', false)
                     user.save()
                         .then(user => res.status(200).send({
                             Message: 'User set to inactive'
@@ -144,9 +151,8 @@ module.exports ={
                 }
             })
             .catch((err) => {
-                res.status(401).send({Error: "something went wrong"});
+                res.status(401).send({Error: "something went wrong"})
                 console.log(err)
             });
-    }
-};
-
+    },
+}
