@@ -11,6 +11,13 @@ module.exports = {
         })
     },
 
+    single(req,res) {
+        Comment.findOne({_id: req.body._id})
+        .then((comment) => {
+            res.status(200).send(comment)
+        })
+    },
+
     create(req, res, next) {
         Comment.create({
             content : req.body.content,
@@ -34,8 +41,8 @@ module.exports = {
                 let contentToSet = req.body.content;
                 let commentsToSet = req.body.comments;
 
-                if(req.body.content === '' || req.body.content === null) contentToSet = comment.title
-                if(req.body.comments === '' || req.body.comments === null) commentsToSet = comment.title
+                if(req.body.content === '' || req.body.content === null) contentToSet = comment.content
+                if(req.body.comments === '' || req.body.comments === null) commentsToSet = comment.comments
 
                 comment.set({
                     content: contentToSet,
