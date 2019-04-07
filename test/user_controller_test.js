@@ -19,7 +19,7 @@ describe('The user_controller', () => {
         user.save().then(() => {
             User.count().then(count => {
                 request(app)
-                    .put('/api/user/')
+                    .put('/api/user/TestUser')
                     .send({ username: 'TestUser', password: 'password123', newPassword: 'password12345' })
                     .set('Accept', 'application/json')
                     .expect(200, done)

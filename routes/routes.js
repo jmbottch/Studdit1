@@ -13,7 +13,7 @@ module.exports = (app) => {
     app.get('/api/users', UserController.findall)
 
     // Change user password
-    app.put('/api/user/:id', UserController.edit);
+    app.put('/api/user/:username', UserController.edit);
 
     // Set user to inactive
     app.delete('/api/user', UserController.delete);
