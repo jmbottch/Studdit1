@@ -27,32 +27,33 @@ describe('The comment_controller', () => {
 
     it('can fetch a list of comments', function (done) {
         request(app)
-            .get('/api/comments')
+            .get('/api/comments') //get all
             .end(function (err, res) {
                 if (err) console.log(err)
-                expect(res.statusCode).to.equal(200)
+                expect(res.statusCode).to.equal(200) //check for status code 200
+                expect(res.body).to.be.an('Array') //check if the list is indeed an array
                 done();
             })
     })
 
     it('can fetch a single comment', function (done) {
         request(app)
-            .post('/api/user')
+            .post('/api/user') //post a test user
             .send(testUser)
             .then(() => {
                 User.findOne({ username: 'testuser' })
                     .then((user) => {
                         request(app)
-                            .post('/api/thread/comment')
+                            .post('/api/thread/comment') //post a test comment
                             .send(testComment)
                             .then(() => {
-                                Comment.findOne({ content: 'TestComment content' })
+                                Comment.findOne({ content: 'TestComment content' }) //find the test comment
                                     .then((foundComment) => {
                                         request(app)
-                                            .get('/api/comment/' + foundComment._id)
+                                            .get('/api/comment/' + foundComment._id) //get the testcomment on its id
                                             .end(function (err, res) {
                                                 if (err) console.log(err);
-                                                expect(res.statusCode).to.equal(200)
+                                                expect(res.statusCode).to.equal(200) //check for statuscode 200
                                                 done()
                                             })
                                     })
@@ -66,17 +67,17 @@ describe('The comment_controller', () => {
 
 it('can create a new comment', function (done) {
     request(app)
-        .post('/api/user')
+        .post('/api/user') // post a test user
         .send(testUser)
         .then(() => {
             User.findOne({ username: 'testuser' })
                 .then((user) => {
                     request(app)
-                        .post('/api/thread/comment')
+                        .post('/api/thread/comment') //post the comment
                         .send(testComment)
                         .end(function (err, res) {
                             if (err) console.log(err)
-                            expect(res.statusCode).to.equal(200)
+                            expect(res.statusCode).to.equal(200) //check for statuscode 200
                             done();
                         })
                 })
@@ -85,23 +86,27 @@ it('can create a new comment', function (done) {
 
 it('can edit an existing comment', function (done) {
     request(app)
-        .post('/api/user')
+        .post('/api/user') //post a test user
         .send(testUser)
         .then(() => {
             User.findOne({ username: 'testuser' })
                 .then((user) => {
                     request(app)
-                        .post('/api/thread/comment')
+                        .post('/api/thread/comment') //post a test comment
                         .send(testComment)
                         .then(() => {
-                            Comment.findOne({ content: 'TestComment content' })
+                            Comment.findOne({ content: 'TestComment content' }) //find the comment
                                 .then((comment) => {
                                     request(app)
-                                        .put('/api/comment/' + comment._id)
-                                        .send(editedComment)
+                                        .put('/api/comment') //edit the data in this comment
+                                        .send({
+                                            _id: comment._id,
+                                            content: 'Edited Content',
+                                            author: testUser._id
+                                        })
                                         .end(function (err, res) {
                                             if (err) console.log(err)
-                                            expect(res.statusCode).to.equal(200)
+                                            expect(res.statusCode).to.equal(200) //check for statuscode 200
                                             done()
                                         })
                                 })
@@ -111,162 +116,33 @@ it('can edit an existing comment', function (done) {
         })
 })
 
-xit('can set a comment to deleted', function (done) {
+it('can set a comment to deleted', function (done) {
     request(app)
         .post('/api/user')
-        .send(testUser)
+        .send(testUser) //post a test user
         .then(() => {
             User.findOne({ username: 'testuser' })
                 .then((user) => {
                     request(app)
-                        .post('/api/thread/comment')
+                        .post('/api/thread/comment') // post a test comment
                         .send(testComment)
-                        .then((testComment) => {
+                        .then(() => {
+                            Comment.findOne({ content: 'TestComment content'}) //find the test comment
+                            .then((foundComment1) => {                            
                             request(app)
-                                .put('/api/comment/delete')
+                                .put('/api/comment/delete') //edit the content of testcomment to deleted
                                 .send({
-                                    _id: testComment._id
-                                }).
-                                end(function (err, res) {
+                                    _id: foundComment1._id
+                                })
+                                .end(function (err, res) {
                                     if (err) console.log(err)
-                                    expect(res.statusCode).to.equal(200)
+                                    expect(res.statusCode).to.equal(200) //check if statuscode is 200
                                     done();
                                 })
                         })
+                        })
+                        
                 })
         })
 })
-
-
-
-    // it('can create a new comment in an existing thread', (done) => {
-    //     request(app)
-    //         .post('/api/thread/comment')
-    //         .send({
-    //             username: "TestUser",
-    //             title: "Test Thread",
-    //             content: "Test post comment"
-    //         })
-    //         .end(() => {
-    //             Thread.findOne({
-    //                     title: "Test Thread"
-    //                 })
-    //                 .then((thread) => {
-    //                     Comment.findOne({
-    //                             content: "Test post comment"
-    //                         })
-    //                         .then((comment) => {
-    //                             assert(comment.content === "Test post comment");
-    //                             done();
-    //                         })
-    //                 })
-    //         })
-    // });
-
-    // it('can create a subcomment under an existing comment', (done) => {
-    //     request(app)
-    //         .post('/api/thread/comment')
-    //         .send({
-    //             username: "TestUser",
-    //             title: "Test Thread",
-    //             content: "Test post comment"
-    //         })
-    //         .end(() => {
-    //             Thread.findOne({
-    //                     title: "Test Thread"
-    //                 })
-    //                 .then((thread) => {
-    //                     Comment.findOne({
-    //                             content: "Test post comment"
-    //                         })
-    //                         .then(() => {
-    //                             request(app)
-    //                                 .post('/api/comment')
-    //                                 .send({
-    //                                     username: "TestUser",
-    //                                     comment: "Test post comment",
-    //                                     content: "Subcomment"
-    //                                 })
-    //                                 .end(() => {
-    //                                     Thread.findOne({
-    //                                             title: "Test Thread"
-    //                                         })
-    //                                         .then((thread) => {
-    //                                             Comment.findOne({
-    //                                                     content: "Test post comment"
-    //                                                 })
-    //                                                 .then((comment) => {
-    //                                                     assert(comment.comments !== null);
-    //                                                     done();
-    //                                                 })
-    //                                         })
-    //                                 })
-    //                         })
-    //                 })
-    //         })
-    // });
-
-    // xit('can change the content of an existing comment', (done) => {
-    //     request(app)
-    //         .post('/api/thread/comment')
-    //         .send({
-    //             username: "TestUser",
-    //             title: "Test Thread",
-    //             content: "Test post comment"
-    //         })
-    //         .end(() => {
-    //             request(app)
-    //                 .put('/api/comment/edit')
-    //                 .send({
-    //                     title: 'Test Thread',
-    //                     content: 'Test post comment',
-    //                     newContent: 'Edited comment'
-    //                 })
-    //                 .end(() => {
-    //                     Thread.findOne({
-    //                         title: "Test Thread"
-    //                     })
-    //                     .then((thread) => {
-    //                         Comment.findOne({
-    //                                 content: "Edited comment"
-    //                             })
-    //                             .then((comment) => {
-    //                                 assert(comment.content === "Edited comment");
-    //                                 done();
-    //                             })
-    //                     })
-    //                 })
-    //         })
-    // });
-
-    // xit('can delete a thread', (done) => {
-    //     request(app)
-    //         .post('/api/thread')
-    //         .send({
-    //             username: 'TestUser',
-    //             title: "Test Post",
-    //             content: "Test post content"
-    //         })
-    //         .end(() => {
-    //             Thread.findOne({
-    //                     title: 'Test Post'
-    //                 })
-    //                 .then((thread) => {
-    //                     request(app)
-    //                         .delete('/api/thread')
-    //                         .send({
-    //                             title: 'Test Post'
-    //                         })
-    //                         .end(() => {
-    //                             Thread.findById({
-    //                                     _id: thread._id
-    //                                 })
-    //                                 .then((thr) => {
-    //                                     assert(thr.title === 'deleted');
-    //                                     done();
-    //                                 })
-    //                         })
-    //                 })
-    //         })
-    // });
 });

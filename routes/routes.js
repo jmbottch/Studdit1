@@ -42,7 +42,7 @@ module.exports = (app) => {
     app.get('/api/comments', CommentController.findall)
     
     // Edit comment
-    app.put('/api/comment/:id', CommentController.edit);
+    app.put('/api/comment', CommentController.edit);
 
     //fetch single comment
     app.get('/api/comment/:id', CommentController.single) 
