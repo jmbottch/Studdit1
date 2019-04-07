@@ -1,4 +1,7 @@
 const User = require('../models/user');
+const neo4j = require('neo4j-driver').v1;
+const driver = neo4j.driver('bolt://hobby-ccflbaaccbcogbkemkneffbl.dbs.graphenedb.com:24786', 
+neo4j.auth.basic('jeroen', 'b.m1mQSF3xsOsB.5LbY3TnSpyUejZ6B'));
 
 module.exports = {
     
@@ -10,13 +13,23 @@ module.exports = {
         })
         .then(user => {
             if (user === null){
+                const username = req.body.username;
+                const session = driver.session();
+                const resultAdd = session.run(
+                    'CREATE (a:User {username: $username}) RETURN a',
+                    {username: username}
+                );
                 User.create({
                     username: username,
                     password: req.body.password,
                     threads: []
                 })
                 .then(function(newUser) {
-                    res.status(201).send({ Message: 'User created' });
+                    res.status(201).send({ Message: 'User created' }),
+                    resultAdd.then(result => {
+                        session.close();
+                        driver.close();
+                    });
                 })
                 .catch(function(err) {
                     if (err.name == 'ValidationError') {
