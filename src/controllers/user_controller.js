@@ -143,59 +143,9 @@ module.exports ={
                         }))
                 }
             })
-<<<<<<< HEAD
-            .catch(next);
-    },
-
-    addFriend(req, res, next){
-        const username1 = req.body.usernameA;
-        const username2 = req.body.usernameB;
-        const session = driver.session();
-
-        const resultAddFriend = session.run(
-            'MATCH (a:User {username: $username1}) ' +
-            'MATCH (b:User {username: $username2}) ' +
-            'MERGE (a)-[:FRIENDs]->(b)',
-            {username1: username1, nausername2: username2}
-        );
-
-        resultAddFriend.then(result => {
-            session.close();
-            driver.close();
-        });
-
-        console.log('Friend has been added successfully!')
-    },
-
-    deleteFriend(req, res, next){
-        const username1 = req.body.usernameA;
-        const username2 = req.body.usernameB;
-        const session = driver.session();
-
-        const resultDeleteFriend = session.run(
-            'MATCH(a:User)-[r:FRIENDs]-(b:User)' +
-            'WHERE a.username = $username1 AND b.username = $username2 ' +
-            'DELETE r ' +
-            'RETURN a, b',
-            {username1: username1, username2: username2}
-
-        );
-
-        resultDeleteFriend.then(result => {
-            session.close();
-            driver.close();
-            res.send(result)
-        })
-        .catch(err => {
-            res.status(400).send({Error: 'Error while deleting friendship.'})
-        })
-
-        console.log('Friends deleted!')
-=======
             .catch((err) => {
                 res.status(401).send({Error: "something went wrong"})
                 console.log(err)
             });
->>>>>>> d581c587c322e18eadca1f37405c65d26668b694
     },
 }
