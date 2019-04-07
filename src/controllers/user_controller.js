@@ -29,7 +29,7 @@ module.exports ={
                 driver.close();
             })
             .catch((err) => {
-                if(err.username == 'MongoError' && err.code == 11000){
+                if(err.username === 'MongoError' && err.code === 11000){
                     res.status(401).send({Error: 'username is already taken.'})
                 }
             })
@@ -48,7 +48,7 @@ module.exports ={
             {username1: username1, username2: username2} 
         ).then(() => {
             res.status(200).send({Message:'Friendship created successfully.'})
-        })
+        });
         resultAddFriend.then(() => {
             session.close();
             driver.close();
@@ -73,7 +73,7 @@ module.exports ={
             {username1: username1, username2: username2}
         ).then(() => {
             res.status(200).send({Message:'Friendship removed succesfully'})
-        })
+        });
 
         resultDeleteFriend.then(result => {
             session.close();
@@ -105,15 +105,15 @@ module.exports ={
         User.findOne({_id: req.body._id})
         .then(user => {
             if(user === null) {
-                res.status(401).send({Error: 'User does not exist.'})
+                res.status(401).send({Error: 'User does not exist.'});
                 console.log("user does not exist")
             }else {
-                console.log(user)              
+                console.log(user);
                 let passwordToSet = req.body.password;               
                 if(req.body.password === '' || req.body.password === null)passwordToSet = user.password;
                 user.set({                 
                     password: passwordToSet
-                })
+                });
                 user.save()
                 .then(() => {
                     res.status(200).send({Message: 'Password changed'})
@@ -136,7 +136,7 @@ module.exports ={
                         Error: 'User does not exist.'
                     })
                 } else {
-                    user.set('active', false)
+                    user.set('active', false);
                     user.save()
                         .then(user => res.status(200).send({
                             Message: 'User set to inactive'
@@ -144,8 +144,9 @@ module.exports ={
                 }
             })
             .catch((err) => {
-                res.status(401).send({Error: "something went wrong"})
+                res.status(401).send({Error: "something went wrong"});
                 console.log(err)
             });
-    },
-}
+    }
+};
+
