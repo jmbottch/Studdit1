@@ -4,135 +4,67 @@ const User = require('../models/user')
 
 module.exports = {
 
-    create(req, res, next) {
-        User.findOne({
-                username: req.body.username
-            })
-            .then((user) => {
-                if (user === null) {
-                    res.status(422).send({
-                        Error: 'User not found'
-                    })
-                } else {
-                    Thread.findOne({
-                            title: req.body.title
-                        })
-                        .then((thread) => {
-                            if (thread === null) {
-                                res.status(422).send({
-                                    Error: 'Thread not found'
-                                })
-                            } else {
-                                const comment = new Comment({
-                                    content: req.body.content,
-                                    author: user
-                                });
-                                thread.comments.push(comment);
-                                Promise.all([comment.save(), thread.save()])
-                                    .then(() => res.status(201).send({
-                                        Message: 'Comment posted'
-                                    }))
-                                    .catch(next);
-                            }
-                        })
-                }
-            });
+    findall(req, res) {
+        Comment.find({})
+        .then((comments) => {
+            res.status(200).send(comments)
+        })
     },
 
-    createSubComment(req, res, next) {
-        User.findOne({
-            username: req.body.username
+    create(req, res, next) {
+        Comment.create({
+            content : req.body.content,
+            votes : 0,
+            author : req.body.author
         })
-        .then((user) => {
-            if (user === null) {
-                res.status(422).send({
-                    Error: 'User not found'
-                })
-            } else {
-                Comment.findOne({
-                        content: req.body.comment
-                    })
-                    .then((comment) => {
-                        if (comment === null) {
-                            res.status(422).send({
-                                Error: 'Comment not found'
-                            })
-                        } else {
-                            const subComment = new Comment({
-                                content: req.body.content,
-                                author: user
-                            });
-                            comment.comments.push(subComment);
-                            Promise.all([comment.save(), subComment.save()])
-                                .then(() => res.status(201).send({
-                                    Message: 'Comment posted'
-                                }))
-                                .catch(next);
-                        }
-                    })
-            }
-        });
+        .then(() => {
+            res.status(200).send({Message: 'Comment has been created'}),
+            console.log('comment created')
+            }).catch((err) => {
+                res.status(401).send({err})
+        })
     },
 
     edit(req, res, next) {
-        Thread.findOne({
-            title: req.body.title
-        })
-        .then(thread => {
-            if (thread === null) {
-                res.status(422).send({
-                    Error: 'Thread does not exist.'
-                })
+        Comment.findOne({ _id: req.body._id})
+        .then(comment => {
+            if(comment === null) {
+                res.status(401).send({Error: 'comment not found'})
             } else {
-                Comment.findOne({
-                    content: req.body.content
+                let contentToSet = req.body.content;
+                let commentsToSet = req.body.comments;
+
+                if(req.body.content === '' || req.body.content === null) contentToSet = comment.title
+                if(req.body.comments === '' || req.body.comments === null) commentsToSet = comment.title
+
+                comment.set({
+                    content: contentToSet,
+                    comments: commentsToSet
                 })
-                    .then((comment) => {
-                        if (comment === null) {
-                            res.status(422).send({
-                                Error: 'Comment does not exist.'
-                            })
-                        } else {
-                            comment.set('content', req.body.newContent)
-                            comment.save()
-                                .then(() => res.status(200).send({
-                                    Message: 'Comment edited'
-                                }))
-                        }
-                    })                    
+                comment.save()
+                .then(() => res.status(200).send({Message: "Comment has been edited."}))
+                .catch((err) => res.status(401).send({err}));    
             }
         })
-        .catch(next);
     },
 
     delete(req, res, next) {
-        const content = req.body.content;
-        
-        Thread.findOne({
-                title: req.body.title
+        Comment.findOne({
+                _id: req.body._id
             })
-            .then(thread => {
-                if (thread === null) {
+            .then(comment => {
+                if (comment === null) {
                     res.status(422).send({
-                        Error: 'Thread does not exist m8.'
+                        Error: 'Comment does not exist.'
                     })
                 } else {
-                    Comment.findOne({
-                        content: content
+                    let deleted = 'deleted';
+                    comment.set({
+                        content: deleted
                     })
-                        .then((comment) => {
-                            if (comment === null) {
-                                res.status(422).send({
-                                    Error: 'Comment does not exist.'
-                                })
-                            } else {
-                                comment.set('content', 'deleted')
-                                comment.save()
-                                    .then(() => res.status(200).send({
-                                        Message: 'Comment deleted'
-                                    }))
-                            }
-                        })                    
+                    comment.save()
+                    .then(() => res.status(200).send({Message: "Comment has been removed."}))
+                    .catch((err) => res.status(401).send({err}));
                 }
             })
             .catch(next);

@@ -3,60 +3,57 @@ const User = require('../models/user');
 
 module.exports = {
 
-    create(req, res, next) {
-        const threadProps = req.body;
+    findall(req, res) {
+        Thread.find({})
+        .then(threads => {
+            res.status(200).send(threads)
+        })
+    },
 
-        User.findOne({
-                username: req.body.username
+    create(req, res, next) {
+
+        Thread.create({
+            title: req.body.title,
+            content: req.body.content,
+            author: req.body.author
+        })
+        .then(() => {
+            res.status(200).send({Message:"Thread has been created."}),
+            console.log('thread created')
+            .catch((err) => {
+                res.status(401).send({err})
+                console.log(err)
             })
-            .then((user) => {
-                if (user === null) {
-                    res.status(422).send({
-                        Error: 'User not found'
-                    })
-                } else {
-                    Thread.create({
-                            "title": req.body.title,
-                            "content": req.body.content,
-                            "author": user._id,
-                        })
-                        .then(() => res.status(201).send({
-                            Message: 'Thread created'
-                        }))
-                        .catch(next);
-                }
-            });
+        })
     },
 
     edit(req, res, next) {
-        const title = req.body.title;
-        const newContent = req.body.content;
-
-        Thread.findOne({
-            title: title
-        })
-        .then((thread) => {
-            if(thread === null){
-                res.status(422).send({
-                    Error: 'Thread does not exist.'
-                })
+        Thread.findOne({_id: req.body._id})
+        .then(thread => {
+            if(thread === null) {
+                res.status(401).send({Error: 'Thread does not exist'})
             } else {
-                thread.set('content', newContent)
-                thread.save()
-                    .then(thread => res.status(200).send({
-                        Message: 'Thread edited'
-                    }))
-            }
+                let titleToSet = req.body.title;
+                let contentToSet = req.body.content;
+        
+                if(req.body.title === '' || req.body.title === null) titleToSet = thread.title
+                if(req.body.content === '' || req.body.content === null ) contentToSet = thread.content;
 
+                thread.set({
+                    title: titleToSet,
+                    content: contentToSet
+                })
+                thread.save()
+                .then(() => res.status(200).send({Message: "Thread has been edited."}))
+                .catch((err) => res.status(401).send({err})); 
+
+            }
         })
-        .catch(next);
     },
 
     delete(req, res, next) {
-        const title = req.body.title;
-
         Thread.findOne({
-                title: title
+                _id: req.body._id
             })
             .then(thread => {
                 if (thread === null) {
