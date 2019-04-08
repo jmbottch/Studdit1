@@ -53,5 +53,4 @@ module.exports = (app) => {
     // Delete comment
     app.put('/api/comment/delete', CommentController.delete);
 
-    
 };

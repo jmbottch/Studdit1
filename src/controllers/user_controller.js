@@ -86,8 +86,10 @@ module.exports ={
     },
 
     fetch(req, res, next) {
+        const username = req.params.username;
+
         User.findOne({
-                username: req.body.username
+                username: username
             })
             .then(user => {
                 if (user === null) {
@@ -98,35 +100,26 @@ module.exports ={
                     res.status(200).send(user);
                 }
             })
-            .catch((err) => {
-                res.status(401).send({Error: ' Something went wrong'})
-            });
+            .catch(next);
     },
 
-    edit(req, res) {
+    edit(req, res, next){
         const username = req.body.username;
+        const currentPassword = req.body.password;
+        const newPassword = req.body.newPassword;
 
-        User.findOne({
-            username: username
-        })
-        .then(user => {
-            if(user === null) {
-                res.status(401).send({Error: 'User does not exist.'})
-                //console.log("user does not exist")
-            }else {
-                //console.log(user)              
-                let passwordToSet = req.body.password;               
-                if(req.body.password === '' || req.body.password === null)passwordToSet = user.password;
-                user.set({                 
-                    password: passwordToSet
-                })
+        User.findOne( { username: username } ) //find user
+        .then(user =>{
+            if(user === null){
+                res.status(422).send({ Error :'User does not exist.'})
+            }
+            if(user.password !== currentPassword){
+                res.status(401).send({ Error :'Current password does not match.'})
+            }
+            else{
+                user.set('password', newPassword)
                 user.save()
-                .then(() => {
-                    res.status(200).send({Message: 'Password changed'})
-                })
-                .catch((err) => {
-                    res.status(401).send({err})
-                })
+                .then(user => res.status(200).send({Message: "password changed succesfully"}))
             }
         })
     },
