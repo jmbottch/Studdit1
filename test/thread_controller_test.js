@@ -23,7 +23,7 @@ describe('The thread_controller', () => {
         .get('/api/threads') //get all threads
         .end(function (err, res) {
             if(err){
-                console.log(err)
+                //console.log(err)
             } 
             else {
                 expect(res.statusCode).to.equal(200)
@@ -49,8 +49,8 @@ describe('The thread_controller', () => {
                     request(app)
                     .get('/api/thread/' + foundThread._id) //find testthread by id
                     .end(function (err, res) {
-                        console.log(foundThread)
-                        if(err) console.log(err)
+                        //console.log(foundThread)
+                        if(err) //console.log(err)
                         expect(res.statusCode).to.equal(200) //check for statuscode 200
                         done()
                     })
@@ -68,7 +68,7 @@ describe('The thread_controller', () => {
                 content: "Test post content",
                 votes: 0
             }).end(function (err, res) {
-                if(err) console.log(err)
+                if(err) //console.log(err)
                 expect(res.statusCode).to.equal(200) //check for statuscode 200
                 done()
             })
@@ -98,7 +98,7 @@ describe('The thread_controller', () => {
                         votes: 2
                     })
                     .end(function(err, res) {
-                        if(err) console.log(err)
+                        if(err) //console.log(err)
                         expect(res.statusCode).to.equal(200) //check for statuscode 200
                         done()
                     })
@@ -124,7 +124,7 @@ describe('The thread_controller', () => {
                     _id: fountThread._id,
                 })
                 .end(function(err, res) {
-                    if(err) console.log(err)
+                    if(err) //console.log(err)
                     expect(res.statusCode).to.equal(200) //check for statuscode 200
                     done()
                 })

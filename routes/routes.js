@@ -7,7 +7,7 @@ module.exports = (app) => {
     app.post('/api/user', UserController.create);
 
     // Fetch user based on username
-    app.get('/api/user/:id', UserController.fetch)
+    app.get('/api/user/:username', UserController.fetch)
 
     // fetch list of all users
     app.get('/api/users', UserController.findall)

@@ -29,7 +29,7 @@ describe('The comment_controller', () => {
         request(app)
             .get('/api/comments') //get all comments
             .end(function (err, res) {
-                if (err) console.log(err)
+                if (err) //console.log(err)
                 expect(res.statusCode).to.equal(200) //check for status code 200
                 expect(res.body).to.be.an('Array') //check if the list is indeed an array
                 done();
@@ -52,7 +52,7 @@ describe('The comment_controller', () => {
                                         request(app)
                                             .get('/api/comment/' + foundComment._id) //get the testcomment on its id
                                             .end(function (err, res) {
-                                                if (err) console.log(err);
+                                                if (err) //console.log(err);
                                                 expect(res.statusCode).to.equal(200) //check for statuscode 200
                                                 done()
                                             })
@@ -76,7 +76,7 @@ it('can create a new comment', function (done) {
                         .post('/api/thread/comment') //post the comment
                         .send(testComment)
                         .end(function (err, res) {
-                            if (err) console.log(err)
+                            if (err) //console.log(err)
                             expect(res.statusCode).to.equal(200) //check for statuscode 200
                             done();
                         })
@@ -105,7 +105,7 @@ it('can edit an existing comment', function (done) {
                                             author: testUser._id
                                         })
                                         .end(function (err, res) {
-                                            if (err) console.log(err)
+                                            if (err) //console.log(err)
                                             expect(res.statusCode).to.equal(200) //check for statuscode 200
                                             done()
                                         })
@@ -135,7 +135,7 @@ it('can set a comment to deleted', function (done) {
                                     _id: foundComment1._id
                                 })
                                 .end(function (err, res) {
-                                    if (err) console.log(err)
+                                    if (err) //console.log(err)
                                     expect(res.statusCode).to.equal(200) //check if statuscode is 200
                                     done();
                                 })

@@ -59,3 +59,10 @@ typings/
 
 # next.js build output
 .next
+.idea/misc.xml
+.idea/Studdit1.iml
+.idea/encodings.xml
+.idea/jsLibraryMappings.xml
+.idea/modules.xml
+.idea/vcs.xml
+.idea/workspace.xml

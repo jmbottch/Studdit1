@@ -87,7 +87,7 @@ module.exports ={
 
     fetch(req, res, next) {
         User.findOne({
-                _id: req.body._id
+                username: req.body.username
             })
             .then(user => {
                 if (user === null) {
@@ -112,9 +112,9 @@ module.exports ={
         .then(user => {
             if(user === null) {
                 res.status(401).send({Error: 'User does not exist.'})
-                console.log("user does not exist")
+                //console.log("user does not exist")
             }else {
-                console.log(user)              
+                //console.log(user)              
                 let passwordToSet = req.body.password;               
                 if(req.body.password === '' || req.body.password === null)passwordToSet = user.password;
                 user.set({                 
@@ -152,7 +152,7 @@ module.exports ={
             })
             .catch((err) => {
                 res.status(401).send({Error: "something went wrong"})
-                console.log(err)
+                //console.log(err)
             });
     },
 }
