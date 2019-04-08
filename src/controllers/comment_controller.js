@@ -19,17 +19,38 @@ module.exports = {
     },
 
     create(req, res, next) {
-        Comment.create({
-            content : req.body.content,
-            votes : 0,
-            author : req.body.author
-        })
-        .then(() => {
-            res.status(200).send({Message: 'Comment has been created'}),
-            console.log('comment created')
-            }).catch((err) => {
-                res.status(401).send({err})
-        })
+        User.findOne({
+                username: req.body.username
+            })
+            .then((user) => {
+                if (user === null) {
+                    res.status(422).send({
+                        Error: 'User not found'
+                    })
+                } else {
+                    Thread.findOne({
+                            title: req.body.title
+                        })
+                        .then((thread) => {
+                            if (thread === null) {
+                                res.status(422).send({
+                                    Error: 'Thread not found'
+                                })
+                            } else {
+                                const comment = new Comment({
+                                    content: req.body.content,
+                                    author: user
+                                });
+                                thread.comments.push(comment);
+                                Promise.all([comment.save(), thread.save()])
+                                    .then(() => res.status(201).send({
+                                        Message: 'Comment posted'
+                                    }))
+                                    .catch(next);
+                            }
+                        })
+                }
+            });
     },
 
     edit(req, res, next) {

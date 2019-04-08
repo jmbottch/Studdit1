@@ -17,21 +17,33 @@ module.exports = {
         })
     },
 
-    create(req, res, next) {
-
-        Thread.create({
-            title: req.body.title,
-            content: req.body.content,
-            author: req.body.author
-        })
-        .then(() => {
-            res.status(200).send({Message:"Thread has been created."}),
-            console.log('thread created')
-            
-            }).catch((err) => {
-                res.status(401).send({err})
-                console.log(err)
-        })
+    create(req, res){
+        User.findById({ _id: req.body.author })
+        .then((user) => {
+        if (user == undefined){
+            res.status(422).send({ Error :'User does not exist.'})
+        } else {
+            Thread.findOne({ title: req.body.title })
+            .then((thread) => {
+            if (thread == undefined){
+                const thread = new Thread({
+                    "title": req.body.title,
+                    "content": req.body.content,
+                    "author": user,
+                    "upVotes": 0,
+                    "downVotes": 0
+                })
+                user.threads.push(thread)
+                thread.save()
+                Promise.all([user.save(), thread.save])
+                .then(() => res.status(200).send({Message: "Thread created succesfully"}))
+                .catch((error) => res.status(401).json(error));
+            } else {
+                res.status(422).send({ Error :'Threadtitle already in use.'});
+            }
+            });
+        }
+    });
     },
 
     edit(req, res, next) {

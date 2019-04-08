@@ -23,11 +23,12 @@ module.exports = (app) => {
     
     // Delete friendship between users
     app.delete('/api/user/deletefriend', UserController.deleteFriend);
+    
     //list of threads
-    app.get('/api/threads', ThreadController.findall)
+    app.get('/api/threads', ThreadController.findall);
 
     // single thread
-    app.get('/api/thread/:id', ThreadController.single)
+    app.get('/api/thread/:id', ThreadController.single);
 
     // Create new thread
     app.post('/api/thread', ThreadController.create);
